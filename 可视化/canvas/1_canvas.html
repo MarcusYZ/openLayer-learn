@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d'); // 获取到 Canvas 对象
+        ctx.fillStyle= 'red';
+        ctx.fillRect(0, 0, 50, 50) // 绘制矩形 起点位置（0，0） 长度 50， 宽度 50
+        ctx.beginPath(); // 开始绘制
+        ctx.lineWidth = 5; // 线条宽度 
+        ctx.strokeStyle = 'blue'; // 绘制的样式
+        ctx.moveTo(100, 100); // 从起点坐标（100， 100）
+        ctx.lineTo(250, 75); // 绘制到 坐标（250，75）
+        ctx.stroke(); // 绘制线段
+        ctx.lineWidth = 1; // 线条宽度 
+        ctx.strokeStyle = 'red'; // 绘制的样式
+        ctx.lineTo(300, 100); // 绘制到 坐标（300, 100）
+        ctx.stroke(); // 绘制线段
+        ctx.beginPath(); // 结束绘制
+        ctx.lineWidth = 2; // 设置宽度
+        ctx.strokeStyle = 'green';
+        ctx.fillStyle = 'red';
+        ctx.arc(200, 200, 50, 0, 2 * Math.PI); // 绘制圆形
+        ctx.stroke();
+        ctx.fill(); // l
+    </script>
+</body>
+</html>
