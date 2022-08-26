@@ -38,6 +38,7 @@
       })
     });
 
+    // 声明矢量图层
     var vectorLayer = new ol.layer.Vector({
       source: new ol.source.Vector({
         url:
@@ -50,6 +51,7 @@
       }
     });
 
+    // 声明地图
     var map = new ol.Map({
       layers: [vectorLayer],
       target: "map",
@@ -97,6 +99,7 @@
 
     var highlight;
     
+    // 展示要素信息
     var displayFeatureInfo = function (pixel) {
       var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
         return feature;

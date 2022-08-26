@@ -47,12 +47,14 @@
       var i;
  
       var iconCount = iconInfo.length;
+      // 初始化 icon数组
       var icons = new Array(iconCount);
       for (i = 0; i < iconCount; ++i) {
         var info = iconInfo[i];
+
         icons[i] = new ol.style.Icon({
-          offset: info.offset,
-          opacity: info.opacity,
+          offset: info.offset, // 图片上的偏移量
+          opacity: info.opacity, // 
           rotateWithView: info.rotateWithView,
           rotation: info.rotation,
           scale: info.scale,
@@ -63,8 +65,9 @@
       }
  
       var featureCount = 150000;
+      // 生成 15w哥点状的要素
       var features = new Array(featureCount);
-      var feature, geometry;
+      var feature, geometry; // 随机生成坐标 并样式化 
       var e = 25000000;
       for (i = 0; i < featureCount; ++i) {
         geometry = new ol.geom.Point(
@@ -78,13 +81,16 @@
         features[i] = feature;
       }
  
+      // 矢量数据源
       var vectorSource = new ol.source.Vector({
         features: features
       });
+      // 矢量图层
       var vector = new ol.layer.Vector({
         source: vectorSource
       });
  
+      // 创建地图
       var map = new ol.WebGLMap({
         layers: [vector],
         target: document.getElementById('map'),

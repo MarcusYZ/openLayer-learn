@@ -12,11 +12,13 @@
   <div id="map" class="map"></div>
 
   <script>
+    // AtlasManager 尺寸
     var atlasManager = new ol.style.AtlasManager({
       initialSize: 2048,
       maxSize: 2048
     });
 
+    // 生成样式的参数
     var symbolInfo = [
       {
         opacity: 1.0,
@@ -43,11 +45,15 @@
         strokeColor: "rgba(145, 43, 20, 0.2)"
       }
     ];
-
+    
+    // 所用的半径
     var radiuses = [3, 6, 9, 15, 19, 25];
+    // 样式的个数
     var symbolCount = symbolInfo.length * radiuses.length * 2;
+    // 声明数组
     var symbols = [];
     var i, j;
+    // 初始化
     for (i = 0; i < symbolInfo.length; ++i) {
       var info = symbolInfo[i];
       for (j = 0; j < radiuses.length; ++j) {
@@ -100,11 +106,12 @@
     }
 
 
-
+    // 随机生成5w个要素
     var featureCount = 50000;
     var features = new Array(featureCount);
     var feature, geometry;
     var e = 25000000;
+    // 随机生成坐标
     for (i = 0; i < featureCount; ++i) {
       geometry = new ol.geom.Point([
         2 * e * Math.random() - e,
@@ -115,17 +122,16 @@
       features[i] = feature;
     }
 
-
-
-
-
+    // 矢量数据源
     var vectorSource = new ol.source.Vector({
       features: features
     });
+    // 矢量图层
     var vector = new ol.layer.Vector({
       source: vectorSource
     });
 
+    // 地图
     var map = new ol.Map({
       layers: [vector],
       target: 'map',

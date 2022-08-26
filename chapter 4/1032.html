@@ -16,33 +16,43 @@
 
   <script>
     
+    // 获取聚合间距的节点
     var distance = document.getElementById('distance');
 
+    // 20000个要素
     var count = 20000;
+    // 初始化
     var features = new Array(count);
+    // 用随机数生成坐标
     var e = 4500000;
     for (var i = 0; i < count; ++i) {
       var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+      // 声明要素
       features[i] = new ol.Feature(new ol.geom.Point(coordinates));
     }
 
+    // 声明矢量数据源
     var source = new ol.source.Vector({
       features: features
     });
 
+    // 声明聚合数据源
     var clusterSource = new ol.source.Cluster({
+      // 两个点的间距小于它就会以聚合的方式显示出来
       distance: parseInt(distance.value, 10),
       source: source
     });
 
+    // 矢量图层里的 style
     var styleCache = {};
-    
+     
+    // 声明矢量图层
     var clusters = new ol.layer.Vector({
-      source: clusterSource,
+      source: clusterSource, 
       style: function (feature) {
-        var size = feature.get('features').length;
-        var style = styleCache[size];
-        if (!style) {
+        var size = feature.get('features').length; // 获取新的尺寸
+        var style = styleCache[size]; // 获取新的样式
+        if (!style) { // 如果没有样式
           style = new ol.style.Style({
             image: new ol.style.Circle({
               radius: 10,
@@ -66,19 +76,22 @@
       }
     });
 
+    // 声明底图数据源
     var raster = new ol.layer.Tile({
       source: new ol.source.OSM()
     });
-
+ 
+    // 声明地图
     var map = new ol.Map({
-      layers: [raster, clusters],
-      target: 'map',
+      layers: [raster, clusters], // 底图、矢量图层
+      target: 'map', 
       view: new ol.View({
         center: [0, 0],
         zoom: 2
       })
     });
 
+    // 坚定dom事件
     distance.addEventListener('input', function () {
       clusterSource.setDistance(parseInt(distance.value, 10));
     });

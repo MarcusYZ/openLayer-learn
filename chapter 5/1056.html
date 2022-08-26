@@ -14,12 +14,13 @@
 
 	<script>
 		
+    // 从 geojson 格式获取数据源 
 		var vectorSource = new ol.source.Vector({
         url: '../data/lands.geojson',
         format: new ol.format.GeoJSON()
       });
 
-
+      // 底图
       var map = new ol.Map({
         layers: [
           new ol.layer.Tile({
@@ -37,9 +38,11 @@
       });
 
   
+      // 获取 选择交互
       var select = new ol.interaction.Select();
       map.addInteraction(select);
 
+      // 已选择的要素
       var selectedFeatures = select.getFeatures();
 
       //DragBox interaction对象，用来实现画框选择
@@ -49,18 +52,24 @@
       });
       map.addInteraction(dragBox);
 
+      // 画框结束时触发的事件
       dragBox.on('boxend', function() {
 
+        // 获取到框的范围
         var extent = dragBox.getGeometry().getExtent();
+        // 通过传入的范围， 判断在不在范围内，如果在的画就传入到要素里。
         vectorSource.forEachFeatureIntersectingExtent(extent, function(feature) {
           selectedFeatures.push(feature);
         });
       });
 
+      // 开始画框的时候
       dragBox.on('boxstart', function() {
+        // 把上次选择到的要素清空
         selectedFeatures.clear();
       });
 
+      // 对数据进行更新
       var infoBox = document.getElementById('info');
 
       selectedFeatures.on(['add', 'remove'], function() {

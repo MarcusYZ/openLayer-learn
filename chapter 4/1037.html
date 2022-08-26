@@ -11,6 +11,7 @@
   <div id="map" class="map"></div>
 
   <script>
+    // 创建地图
     var map = new ol.Map({
       target: "map",
       view: new ol.View({
@@ -19,9 +20,12 @@
       })
     });
 
+    // 声明文字标签的样式
     var labelStyle = new ol.style.Style({
+      // 声明图形 
       geometry: function (feature) {
         var geometry = feature.getGeometry();
+        // 几何类型是多边形
         if (geometry.getType() == "MultiPolygon") {
           // 多个多边形要素集合中仅渲染最宽的那个
           var polygons = geometry.getPolygons();
@@ -50,6 +54,7 @@
       })
     });
     
+    // 声明多边形样式
     var countryStyle = new ol.style.Style({
       fill: new ol.style.Fill({
         color: "rgba(255, 255, 255, 0.6)"
@@ -60,8 +65,10 @@
       })
     });
     
+    // 声明样式
     var style = [countryStyle, labelStyle];
 
+    // 声矢量图层
     var vectorLayer = new ol.layer.Vector({
       source: new ol.source.Vector({
         url: "../data/lands.geojson",
@@ -74,6 +81,7 @@
       declutter: true
     });
 
+    // 将构造的矢量图层添加到map里
     map.addLayer(vectorLayer);
 
 

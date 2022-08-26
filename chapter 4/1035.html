@@ -46,16 +46,18 @@
         })]
       });
 
-      map.on('pointermove', showInfo);
+      map.on('pointermove', showInfo); // 鼠标移动
 
       var info = document.getElementById('info');
       function showInfo(event) {
+        // 通过鼠标事件拿到屏幕坐标 ，找到对应的要素
         var features = map.getFeaturesAtPixel(event.pixel);
         if (!features) {
           info.innerText = '';
           info.style.opacity = 0;
           return;
         }
+        // 如果找到了要素，取到第一个要素拿到属性， 通过 stringify的解析获取到属性。
         var properties = features[0].getProperties();
         info.innerText = JSON.stringify(properties, null, 2);
         info.style.opacity = 1;

@@ -22,17 +22,18 @@
     // 实现思路：声明一个对象selection用于存放被选中的要素，在图层的styleFunction中根据feature的索引来确定
     //当前选择的feature是否在selection中，从而决定feature的样式   
 
-    var selection = {};
+    var selection = {}; // 存放被选中的要素
 
-    var idProp = 'iso_a3';
+    var idProp = 'iso_a3'; // 读取每个矢量瓦片 名为 iso_a3 属性值的名称
 
-    var vtLayer = new ol.layer.VectorTile({
+    var vtLayer = new ol.layer.VectorTile({ // 矢量图层
       //  declutter: true,
       source: new ol.source.VectorTile({
-        format: new ol.format.MVT(),
+        format: new ol.format.MVT(), // 声明矢量瓦片
         url: 'https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/' +
           'ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf'
       }),
+      // 声明图层中定义样式
       style: function (feature) {
         var selected = !!selection[feature.get(idProp)];
         return new ol.style.Style({
@@ -49,7 +50,7 @@
 
 
 
-
+    // 初始化地图
     var map = new ol.Map({
       layers: [
         vtLayer
@@ -61,8 +62,10 @@
       })
     });
 
+    // 获取到选择的元素
     var selectElement = document.getElementById('type');
 
+    // 绑定点击样式
     map.on('click', function (event) {
       var features = map.getFeaturesAtPixel(event.pixel);
       if (!features) {
@@ -72,8 +75,10 @@
         // vtLayer.setStyle(vtLayer.getStyle());
         return;
       }
+      // 声明要素
       var feature = features[0];
       console.log(features)
+      // 获取到要素
       var fid = feature.get(idProp);
 
       if (selectElement.value === 'singleselect') {

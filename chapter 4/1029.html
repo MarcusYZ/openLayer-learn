@@ -16,6 +16,8 @@
   <div id="map" class="map"></div>
 
   <script>
+
+    // 声明一个矢量数据 
     var iconFeature = new ol.Feature({
       geometry: new ol.geom.Point([0, 0]),
       name: '虚无岛',
@@ -23,32 +25,38 @@
       rainfall: 500
     });
 
+    // 元素样式
     var iconStyle = new ol.style.Style({
       image: new ol.style.Icon(({
-        anchor: [0.5, 46],
+        anchor: [0.5, 46], // 图像的哪个像素点坐标
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
         src: '../data/icon.png'
       }))
     });
 
+    // 设置元素样式
     iconFeature.setStyle(iconStyle);
 
+    // 声明矢量数据源
     var vectorSource = new ol.source.Vector({
       features: [iconFeature]
     });
 
+    // 声明时一个矢量图层
     var vectorLayer = new ol.layer.Vector({
       source: vectorSource
     });
 
+    // 底图
     var rasterLayer = new ol.layer.Tile({
       source: new ol.source.TileJSON({
         url: 'https://api.tiles.mapbox.com/v4/mapbox.geography-class.json?secure&access_token=pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2pzbmg0Nmk5MGF5NzQzbzRnbDNoeHJrbiJ9.7_-_gL8ur7ZtEiNwRfCy7Q',
         crossOrigin: ''
       })
     });
-
+    
+    // 地图
     var map = new ol.Map({
       layers: [rasterLayer, vectorLayer],
       target: 'map',
@@ -61,6 +69,7 @@
     var element = document.getElementById('popup');
 
 
+    // 覆盖物
     var popup = new ol.Overlay({
       element: element,
       positioning: 'bottom-center',
@@ -69,17 +78,17 @@
     });
     map.addOverlay(popup);
 
-
-
+    // 点击事件
     map.on('click', function (evt) {
+      // 获取到要素
       var feature = map.forEachFeatureAtPixel(evt.pixel,
         function (feature) {
-          return feature;
+          return feature; 把要素返回
         });
       if (feature) {
         var coordinates = feature.getGeometry().getCoordinates();
         popup.setPosition(coordinates);
-        $(element).popover({
+        $(element).popover({ // 弹出信息
           title: "信息:",
           placement: 'top',
           html: true,
@@ -91,8 +100,7 @@
       }
     });
 
-
-
+    // 触摸屏
     map.on('pointermove', function (e) {
       if (e.dragging) {
         $(element).popover('destroy');

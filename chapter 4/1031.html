@@ -10,27 +10,30 @@
   <div id="map" class="map"></div>
 
   <script>
+
+    // 声明 view对象
     var view = new ol.View({
       center: [0, 0],
       zoom: 3
     });
 
-    function createStyle(src, img) {
+    // 创建样式
+    function createStyle(src, img) { // 图标的地址 img会覆盖src
       return new ol.style.Style({
         image: new ol.style.Icon(
           {
-            anchor: [0.5, 0.96],
-            crossOrigin: "anonymous",
+            anchor: [0.5, 0.96], // 图标相对于点的位置
+            crossOrigin: "anonymous", // 
             // color:[255,0,0],
-            src: src,
-            img: img,
-            imgSize: img ? [img.width, img.height] : undefined
+            src: src, // 图标地址
+            img: img, // img地址
+            imgSize: img ? [img.width, img.height] : undefined // img的样式
           }
         )
       });
     }
 
-    // 点要素
+    // 声明一个点要素
     var iconFeature = new ol.Feature(new ol.geom.Point([0, 0]));
     // 设置样式
     iconFeature.set(
@@ -41,28 +44,36 @@
       )
     );
 
+    // 初始化地图
     var map = new ol.Map({
+      // 底图图层
       layers: [
         new ol.layer.Tile({
           source: new ol.source.Stamen({ layer: "watercolor" })
         }),
+        // 矢量图层
         new ol.layer.Vector({
+          // 获取要素的样式
           style: function (feature) {
             return feature.get("style");
           },
+          // 数据源
           source: new ol.source.Vector({ features: [iconFeature] })
         })
       ],
+      // 挂载的dom节点
       target: "map",
+      // 视图
       view: view
     });
 
-    var selectStyle = {};
+    // 选择的样式
+    var selectStyle = {}; // 初始是空的
 
-
+    // 选择，通过要素传进来获取它的样式。
     var select = new ol.interaction.Select({
-      style: function (feature) {
-        var image = feature
+      style: function (feature) { // 每一次图层都会渲染
+        var image = feature // 获取图片
           .get("style")
           .getImage()
           .getImage();
@@ -87,13 +98,12 @@
           context.putImageData(imageData, 0, 0);
           // 创建样式并添加到选择样式中
           selectStyle[image.src] = createStyle(undefined, canvas);
-         
         }
         return selectStyle[image.src];
       }
     });
 
-    map.addInteraction(select);
+    map.addInteraction(select); // 底图添加事件
 
     // 鼠标移到要素上时改变鼠标样式
     map.on("pointermove", function (evt) {
